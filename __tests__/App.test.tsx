@@ -127,6 +127,49 @@ describe('App', () => {
     });
   });
 
+  it('elimina un producto desde el detalle tras confirmar en el modal', async () => {
+    jest
+      .spyOn(global, 'fetch')
+      .mockResolvedValueOnce({
+        json: async () => ({data: mockProducts}),
+        ok: true,
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+      } as Response);
+
+    let app: renderer.ReactTestRenderer;
+
+    await act(async () => {
+      app = renderer.create(<App />);
+    });
+
+    await act(async () => {
+      app!.root.findByProps({testID: 'product-item-trj-crd'}).props.onPress();
+    });
+
+    await act(async () => {
+      app!.root.findByProps({testID: 'open-delete-product'}).props.onPress();
+    });
+
+    await act(async () => {
+      app!.root.findByProps({testID: 'confirm-delete-product'}).props.onPress();
+    });
+
+    const content = app!.root
+      .findAllByType(Text)
+      .map(node => node.props.children)
+      .flat(Infinity)
+      .join(' ');
+
+    expect(content).toContain('Cuenta de Ahorro');
+    expect(content).not.toContain('Tarjetas de Credito');
+
+    await act(async () => {
+      app!.unmount();
+    });
+  });
+
   it('filtra el listado y actualiza el conteo relativo', async () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => ({data: mockProducts}),

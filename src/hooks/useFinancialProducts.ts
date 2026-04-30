@@ -8,6 +8,7 @@ interface UseFinancialProductsResult {
   error: string | null;
   isLoading: boolean;
   products: FinancialProduct[];
+  removeProduct: (productId: string) => void;
   retry: () => Promise<void>;
   updateProduct: (product: FinancialProduct) => void;
 }
@@ -45,6 +46,11 @@ export function useFinancialProducts(): UseFinancialProductsResult {
     error,
     isLoading,
     products,
+    removeProduct: (productId: string) => {
+      setProducts(currentProducts =>
+        currentProducts.filter(product => product.id !== productId),
+      );
+    },
     retry: loadProducts,
     updateProduct: (product: FinancialProduct) => {
       setProducts(currentProducts =>

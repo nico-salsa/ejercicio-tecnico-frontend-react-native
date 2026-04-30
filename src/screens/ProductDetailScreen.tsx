@@ -1,6 +1,7 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 
+import {ProductDeleteModal} from '../components/ProductDeleteModal';
 import {ProductLogoCard} from '../components/ProductLogoCard';
 import {ScreenLayout} from '../components/ScreenLayout';
 import {AppButton, AppText, spacing} from '../designSystem';
@@ -9,6 +10,7 @@ import {formatProductDate} from '../utils/date';
 
 interface ProductDetailScreenProps {
   onBack: () => void;
+  onDelete: () => Promise<void>;
   onEdit: () => void;
   product: FinancialProduct;
 }
@@ -39,9 +41,40 @@ function DetailRow({label, value}: DetailRowProps): React.JSX.Element {
 
 export function ProductDetailScreen({
   onBack,
+  onDelete,
   onEdit,
   product,
 }: ProductDetailScreenProps): React.JSX.Element {
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  const [deleteError, setDeleteError] = React.useState<string | null>(null);
+
+  function closeDeleteModal() {
+    if (isDeleting) {
+      return;
+    }
+
+    setDeleteError(null);
+    setIsDeleteModalVisible(false);
+  }
+
+  async function handleDeleteConfirm() {
+    try {
+      setIsDeleting(true);
+      setDeleteError(null);
+      await onDelete();
+      setIsDeleteModalVisible(false);
+    } catch (error) {
+      setDeleteError(
+        error instanceof Error
+          ? error.message
+          : 'Ocurrio un error inesperado al eliminar el producto.',
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
   return (
     <ScreenLayout>
       <ScrollView contentContainerStyle={styles.content}>
@@ -76,8 +109,23 @@ export function ProductDetailScreen({
           testID="open-edit-product"
           variant="secondary"
         />
-        <AppButton disabled label="Eliminar" variant="danger" />
+        <AppButton
+          label="Eliminar"
+          onPress={() => setIsDeleteModalVisible(true)}
+          testID="open-delete-product"
+          variant="danger"
+        />
       </View>
+      <ProductDeleteModal
+        error={deleteError}
+        isLoading={isDeleting}
+        onClose={closeDeleteModal}
+        onConfirm={() => {
+          void handleDeleteConfirm();
+        }}
+        productName={product.name}
+        visible={isDeleteModalVisible}
+      />
     </ScreenLayout>
   );
 }

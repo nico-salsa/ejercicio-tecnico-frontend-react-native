@@ -54,3 +54,12 @@ Nota:
 - Si Expo cambia el puerto, usa exactamente la URL que imprima en consola en la linea `Web is waiting on http://localhost:XXXX`.
 - El entrypoint web del proyecto usa `registerRootComponent` de Expo en [index.js](C:/Sofka%20U/reto%204/ejercicio-tecnico-frontend-react-native/index.js:1), que es el registro correcto para evitar pantallas en blanco por montaje incompleto en web.
 - Si pruebas desde navegador, el backend local debe permitir CORS. En este workspace eso queda resuelto con `cors: true` en [repo-interview-main/src/main.ts](C:/Sofka%20U/reto%204/ejercicio-tecnico-frontend-react-native/repo-interview-main/src/main.ts:1). Si cambias ese backend o lo vuelves a descomprimir, reinicia el servicio despues de reaplicar ese ajuste.
+
+## Prueba manual de F2
+
+1. Levanta el backend local en `repo-interview-main` con `npm run start:dev`.
+2. En la raiz del frontend ejecuta `npm run web`.
+3. Abre la URL que imprima Expo.
+4. En el campo `Search...`, escribe parte del nombre de un producto, por ejemplo `ahorro`, y verifica que el listado se filtre.
+5. Escribe un identificador parcial, por ejemplo `trj`, y verifica que el filtro tambien funcione por `id`.
+6. Escribe un termino sin coincidencias y verifica el estado visual `Sin resultados`.

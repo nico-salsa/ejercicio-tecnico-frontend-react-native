@@ -1,9 +1,5 @@
-import React from 'react';
-import {
-  FlatList,
-  ListRenderItem,
-  StyleSheet,
-} from 'react-native';
+import React, {useState} from 'react';
+import {FlatList, ListRenderItem, StyleSheet} from 'react-native';
 
 import {FeedbackState} from '../components/FeedbackState';
 import {LoadingState} from '../components/LoadingState';
@@ -13,6 +9,7 @@ import {ScreenLayout} from '../components/ScreenLayout';
 import {AppText, Surface, colors, radii, spacing} from '../designSystem';
 import {useFinancialProducts} from '../hooks/useFinancialProducts';
 import type {FinancialProduct} from '../types/financialProduct';
+import {filterFinancialProducts, normalizeSearchTerm} from '../utils/search';
 
 interface ProductListScreenProps {
   onSelectProduct: (product: FinancialProduct) => void;
@@ -22,6 +19,10 @@ export function ProductListScreen({
   onSelectProduct,
 }: ProductListScreenProps): React.JSX.Element {
   const {error, isLoading, products, retry} = useFinancialProducts();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredProducts = filterFinancialProducts(products, searchQuery);
+  const hasSearchQuery = normalizeSearchTerm(searchQuery).length > 0;
 
   const renderItem: ListRenderItem<FinancialProduct> = ({item}) => (
     <ProductListItem onPress={() => onSelectProduct(item)} product={item} />
@@ -29,7 +30,7 @@ export function ProductListScreen({
 
   return (
     <ScreenLayout>
-      <ProductSearchField />
+      <ProductSearchField onChangeText={setSearchQuery} value={searchQuery} />
 
       {isLoading ? <LoadingState /> : null}
 
@@ -51,10 +52,17 @@ export function ProductListScreen({
         />
       ) : null}
 
-      {!isLoading && !error && products.length > 0 ? (
+      {!isLoading && !error && products.length > 0 && filteredProducts.length === 0 ? (
+        <FeedbackState
+          message={`No se encontraron productos para "${searchQuery.trim()}".`}
+          title="Sin resultados"
+        />
+      ) : null}
+
+      {!isLoading && !error && filteredProducts.length > 0 ? (
         <Surface style={styles.listCard} variant="card">
           <FlatList
-            data={products}
+            data={filteredProducts}
             keyExtractor={item => item.id}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
@@ -62,9 +70,12 @@ export function ProductListScreen({
         </Surface>
       ) : null}
 
-      {!isLoading && !error && products.length > 0 ? (
+      {!isLoading && !error && filteredProducts.length > 0 ? (
         <AppText style={styles.caption} variant="caption">
-          {products.length} productos cargados desde la API.
+          {filteredProducts.length}
+          {hasSearchQuery
+            ? ' productos coinciden con tu busqueda.'
+            : ' productos cargados desde la API.'}
         </AppText>
       ) : null}
     </ScreenLayout>

@@ -41,3 +41,4 @@ Nota:
 - En F1 el campo de busqueda y los botones `Editar` / `Eliminar` se muestran como placeholders visuales alineados con D1.
 - Si Expo cambia el puerto, usa exactamente la URL que imprima en consola en la linea `Web is waiting on http://localhost:XXXX`.
 - El entrypoint web del proyecto usa `registerRootComponent` de Expo en [index.js](C:/Sofka%20U/reto%204/ejercicio-tecnico-frontend-react-native/index.js:1), que es el registro correcto para evitar pantallas en blanco por montaje incompleto en web.
+- Si pruebas desde navegador, el backend local debe permitir CORS. En este workspace eso queda resuelto con `cors: true` en [repo-interview-main/src/main.ts](C:/Sofka%20U/reto%204/ejercicio-tecnico-frontend-react-native/repo-interview-main/src/main.ts:1). Si cambias ese backend o lo vuelves a descomprimir, reinicia el servicio despues de reaplicar ese ajuste.

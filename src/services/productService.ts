@@ -51,3 +51,29 @@ export async function createFinancialProduct(
   const body = (await response.json()) as {data: FinancialProduct};
   return body.data;
 }
+
+export async function updateFinancialProduct(
+  id: string,
+  payload: Omit<FinancialProductInput, 'id'>,
+): Promise<FinancialProduct> {
+  const response = await fetch(
+    `${API_CONFIG.baseUrl}${API_CONFIG.productsPath}/${id}`,
+    {
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'PUT',
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('No fue posible actualizar el producto financiero.');
+  }
+
+  const body = (await response.json()) as {data: Omit<FinancialProduct, 'id'>};
+  return {
+    id,
+    ...body.data,
+  };
+}

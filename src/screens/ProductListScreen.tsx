@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList, ListRenderItem, StyleSheet} from 'react-native';
+import {FlatList, ListRenderItem, StyleSheet, View} from 'react-native';
 
 import {FeedbackState} from '../components/FeedbackState';
 import {LoadingState} from '../components/LoadingState';
@@ -39,65 +39,76 @@ export function ProductListScreen({
 
   return (
     <ScreenLayout>
-      <ProductSearchField onChangeText={setSearchQuery} value={searchQuery} />
+      <View style={styles.content}>
+        <ProductSearchField onChangeText={setSearchQuery} value={searchQuery} />
 
-      {isLoading ? <LoadingState /> : null}
+        {isLoading ? <LoadingState /> : null}
 
-      {!isLoading && error ? (
-        <FeedbackState
-          actionLabel="Reintentar"
-          message={error}
-          onPress={() => {
-            void retry();
-          }}
-          title="No fue posible cargar el listado"
-        />
-      ) : null}
-
-      {!isLoading && !error && products.length === 0 ? (
-        <FeedbackState
-          message="Aun no hay productos financieros disponibles para mostrar."
-          title="Listado vacio"
-        />
-      ) : null}
-
-      {!isLoading && !error && products.length > 0 && filteredProducts.length === 0 ? (
-        <FeedbackState
-          message={`No se encontraron productos para "${searchQuery.trim()}".`}
-          title="Sin resultados"
-        />
-      ) : null}
-
-      {!isLoading && !error && filteredProducts.length > 0 ? (
-        <Surface style={styles.listCard} variant="card">
-          <FlatList
-            data={filteredProducts}
-            keyExtractor={item => item.id}
-            renderItem={renderItem}
-            showsVerticalScrollIndicator={false}
+        {!isLoading && error ? (
+          <FeedbackState
+            actionLabel="Reintentar"
+            message={error}
+            onPress={() => {
+              void retry();
+            }}
+            title="No fue posible cargar el listado"
           />
-        </Surface>
-      ) : null}
+        ) : null}
 
-      {!isLoading && !error && products.length > 0 ? (
-        <ProductRecordCount
-          filteredCount={filteredProducts.length}
-          hasActiveFilter={hasSearchQuery}
-          totalCount={products.length}
+        {!isLoading && !error && products.length === 0 ? (
+          <FeedbackState
+            message="Aun no hay productos financieros disponibles para mostrar."
+            title="Listado vacio"
+          />
+        ) : null}
+
+        {!isLoading && !error && products.length > 0 && filteredProducts.length === 0 ? (
+          <FeedbackState
+            message={`No se encontraron productos para "${searchQuery.trim()}".`}
+            title="Sin resultados"
+          />
+        ) : null}
+
+        {!isLoading && !error && filteredProducts.length > 0 ? (
+          <Surface style={styles.listCard} variant="card">
+            <FlatList
+              data={filteredProducts}
+              keyExtractor={item => item.id}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+            />
+          </Surface>
+        ) : null}
+
+        {!isLoading && !error && products.length > 0 ? (
+          <ProductRecordCount
+            filteredCount={filteredProducts.length}
+            hasActiveFilter={hasSearchQuery}
+            totalCount={products.length}
+          />
+        ) : null}
+      </View>
+
+      <View style={styles.actions}>
+        <AppButton
+          label="Agregar"
+          onPress={onCreateProduct}
+          testID="open-create-product"
+          variant="warning"
         />
-      ) : null}
-
-      <AppButton
-        label="Agregar"
-        onPress={onCreateProduct}
-        testID="open-create-product"
-        variant="primary"
-      />
+      </View>
     </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
+  actions: {
+    paddingBottom: spacing.xxl,
+    paddingTop: spacing.xl,
+  },
+  content: {
+    flex: 1,
+  },
   listCard: {
     borderColor: colors.border,
     borderRadius: radii.lg,

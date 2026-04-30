@@ -48,7 +48,7 @@ interface AppButtonProps {
   label: string;
   onPress?: () => void;
   testID?: string;
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'warning';
 }
 
 interface AppFieldProps extends Omit<TextInputProps, 'style'> {
@@ -131,12 +131,19 @@ export function AppButton({
         variant === 'primary' ? styles.buttonPrimary : null,
         variant === 'secondary' ? styles.buttonSecondary : null,
         variant === 'danger' ? styles.buttonDanger : null,
+        variant === 'warning' ? styles.buttonWarning : null,
         pressed ? styles.buttonPressed : null,
         disabled ? styles.buttonDisabled : null,
       ]}
       testID={testID}>
       <AppText
-        style={variant === 'secondary' ? styles.buttonSecondaryText : styles.buttonPrimaryText}>
+        style={
+          variant === 'secondary'
+            ? styles.buttonSecondaryText
+            : variant === 'warning'
+              ? styles.buttonWarningText
+              : styles.buttonPrimaryText
+        }>
         {label}
       </AppText>
     </Pressable>
@@ -223,6 +230,14 @@ const styles = StyleSheet.create({
   },
   buttonSecondaryText: {
     color: '#355089',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  buttonWarning: {
+    backgroundColor: colors.warning,
+  },
+  buttonWarningText: {
+    color: colors.textStrong,
     fontSize: 14,
     fontWeight: '700',
   },

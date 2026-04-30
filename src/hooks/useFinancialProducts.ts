@@ -9,6 +9,7 @@ interface UseFinancialProductsResult {
   isLoading: boolean;
   products: FinancialProduct[];
   retry: () => Promise<void>;
+  updateProduct: (product: FinancialProduct) => void;
 }
 
 export function useFinancialProducts(): UseFinancialProductsResult {
@@ -45,5 +46,12 @@ export function useFinancialProducts(): UseFinancialProductsResult {
     isLoading,
     products,
     retry: loadProducts,
+    updateProduct: (product: FinancialProduct) => {
+      setProducts(currentProducts =>
+        currentProducts.map(currentProduct =>
+          currentProduct.id === product.id ? product : currentProduct,
+        ),
+      );
+    },
   };
 }

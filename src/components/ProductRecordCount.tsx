@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 
-import {AppText, Stack, colors, spacing} from '../designSystem';
+import {AppText, colors, spacing} from '../designSystem';
 
 interface ProductRecordCountProps {
   filteredCount: number;
@@ -18,26 +18,17 @@ export function ProductRecordCount({
     ? `${filteredCount} de ${totalCount} registros`
     : `${totalCount} registros`;
 
-  const secondaryLabel = hasActiveFilter
-    ? 'Cantidad visible segun la busqueda'
-    : 'Cantidad obtenida desde la API';
-
   return (
-    <Stack gap={spacing.xxs} style={styles.container}>
-      <AppText style={styles.primaryLabel} variant="bodyStrong">
-        {primaryLabel}
-      </AppText>
-      <AppText variant="caption">{secondaryLabel}</AppText>
-    </Stack>
+    <AppText style={styles.primaryLabel} variant="bodyStrong">
+      {primaryLabel}
+    </AppText>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: spacing.sm + 2,
-  },
   primaryLabel: {
     color: colors.accent,
+    marginTop: spacing.sm + 2,
     textTransform: 'capitalize',
   },
 });

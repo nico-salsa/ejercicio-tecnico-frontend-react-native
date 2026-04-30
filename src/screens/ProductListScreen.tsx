@@ -3,8 +3,6 @@ import {
   FlatList,
   ListRenderItem,
   StyleSheet,
-  Text,
-  View,
 } from 'react-native';
 
 import {FeedbackState} from '../components/FeedbackState';
@@ -12,6 +10,7 @@ import {LoadingState} from '../components/LoadingState';
 import {ProductListItem} from '../components/ProductListItem';
 import {ProductSearchField} from '../components/ProductSearchField';
 import {ScreenLayout} from '../components/ScreenLayout';
+import {AppText, Surface, colors, radii, spacing} from '../designSystem';
 import {useFinancialProducts} from '../hooks/useFinancialProducts';
 import type {FinancialProduct} from '../types/financialProduct';
 
@@ -53,20 +52,20 @@ export function ProductListScreen({
       ) : null}
 
       {!isLoading && !error && products.length > 0 ? (
-        <View style={styles.listCard}>
+        <Surface style={styles.listCard} variant="card">
           <FlatList
             data={products}
             keyExtractor={item => item.id}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
           />
-        </View>
+        </Surface>
       ) : null}
 
       {!isLoading && !error && products.length > 0 ? (
-        <Text style={styles.caption}>
+        <AppText style={styles.caption} variant="caption">
           {products.length} productos cargados desde la API.
-        </Text>
+        </AppText>
       ) : null}
     </ScreenLayout>
   );
@@ -74,14 +73,12 @@ export function ProductListScreen({
 
 const styles = StyleSheet.create({
   caption: {
-    color: '#64748B',
-    fontSize: 12,
-    marginTop: 10,
+    marginTop: spacing.sm + 2,
     textAlign: 'center',
   },
   listCard: {
-    borderColor: '#E5E7EB',
-    borderRadius: 8,
+    borderColor: colors.border,
+    borderRadius: radii.lg,
     borderWidth: 1,
     overflow: 'hidden',
   },

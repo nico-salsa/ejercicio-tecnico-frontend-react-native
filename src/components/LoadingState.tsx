@@ -1,10 +1,12 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 
+import {colors, spacing} from '../designSystem';
+
 export function LoadingState(): React.JSX.Element {
   return (
     <View style={styles.container}>
-      <ActivityIndicator color="#1D4ED8" size="small" />
+      <ActivityIndicator color={colors.info} size="small" />
       <Text style={styles.text}>Cargando productos financieros...</Text>
     </View>
   );
@@ -17,8 +19,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   text: {
-    color: '#64748B',
+    color: colors.textMuted,
     fontSize: 13,
-    marginTop: 12,
+    marginTop: spacing.md,
   },
 });

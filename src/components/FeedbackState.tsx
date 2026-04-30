@@ -1,5 +1,7 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
+
+import {AppButton, AppText, Surface, colors, spacing} from '../designSystem';
 
 interface FeedbackStateProps {
   actionLabel?: string;
@@ -15,52 +17,32 @@ export function FeedbackState({
   title,
 }: FeedbackStateProps): React.JSX.Element {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.message}>{message}</Text>
+    <Surface padded style={styles.container} variant="muted">
+      <AppText style={styles.title} variant="headingSmall">
+        {title}
+      </AppText>
+      <AppText style={styles.message}>{message}</AppText>
       {actionLabel && onPress ? (
-        <Pressable onPress={onPress} style={styles.button}>
-          <Text style={styles.buttonText}>{actionLabel}</Text>
-        </Pressable>
+        <AppButton label={actionLabel} onPress={onPress} />
       ) : null}
-    </View>
+    </Surface>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: '#1D4ED8',
-    borderRadius: 8,
-    marginTop: 14,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontWeight: '700',
-  },
   container: {
     alignItems: 'center',
-    backgroundColor: '#F8FAFC',
-    borderColor: '#E2E8F0',
-    borderRadius: 10,
-    borderWidth: 1,
     justifyContent: 'center',
     marginTop: 36,
-    padding: 24,
   },
   message: {
-    color: '#475569',
-    fontSize: 14,
+    color: colors.textSubtle,
     lineHeight: 20,
+    marginBottom: spacing.lg,
     textAlign: 'center',
   },
   title: {
-    color: '#0F172A',
-    fontSize: 17,
-    fontWeight: '700',
-    marginBottom: 8,
+    marginBottom: spacing.sm,
     textAlign: 'center',
   },
 });

@@ -1,6 +1,7 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 
+import {AppText, colors, sizing, spacing} from '../designSystem';
 import type {FinancialProduct} from '../types/financialProduct';
 
 interface ProductListItemProps {
@@ -16,42 +17,37 @@ export function ProductListItem({
     <Pressable
       accessibilityLabel={`Abrir detalle de ${product.name}`}
       onPress={onPress}
-      testID={`product-item-${product.id}`}
-      style={styles.container}>
+      style={styles.container}
+      testID={`product-item-${product.id}`}>
       <View>
-        <Text style={styles.name}>{product.name}</Text>
-        <Text style={styles.id}>ID: {product.id}</Text>
+        <AppText variant="bodyStrong">{product.name}</AppText>
+        <AppText style={styles.id} variant="metric">
+          ID: {product.id}
+        </AppText>
       </View>
-      <Text style={styles.chevron}>›</Text>
+      <AppText style={styles.chevron}>›</AppText>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   chevron: {
-    color: '#94A3B8',
+    color: colors.textSoft,
     fontSize: 22,
     fontWeight: '400',
   },
   container: {
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderBottomColor: '#E5E7EB',
+    backgroundColor: colors.background,
+    borderBottomColor: colors.border,
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    minHeight: 66,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    minHeight: sizing.listRowHeight,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
   },
   id: {
-    color: '#94A3B8',
-    fontSize: 11,
-    marginTop: 4,
-  },
-  name: {
-    color: '#111827',
-    fontSize: 14,
-    fontWeight: '600',
+    marginTop: spacing.xxs,
   },
 });

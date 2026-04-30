@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
+import {ScreenContainer, spacing} from '../designSystem';
 import {AppHeader} from './AppHeader';
 
 interface ScreenLayoutProps {
@@ -9,21 +10,17 @@ interface ScreenLayoutProps {
 
 export function ScreenLayout({children}: ScreenLayoutProps): React.JSX.Element {
   return (
-    <View style={styles.safeArea}>
+    <ScreenContainer>
       <AppHeader />
       <View style={styles.content}>{children}</View>
-    </View>
+    </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: '#FFFFFF',
-    flex: 1,
-  },
   content: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.xl,
     paddingTop: 18,
   },
 });

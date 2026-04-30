@@ -1,6 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 
+import {colors, radii, sizing, spacing} from '../designSystem';
 import {isRemoteLogo} from '../utils/logo';
 
 interface ProductLogoCardProps {
@@ -22,28 +23,28 @@ export function ProductLogoCard({logo}: ProductLogoCardProps): React.JSX.Element
 
 const styles = StyleSheet.create({
   image: {
-    borderRadius: 4,
-    height: 96,
+    borderRadius: radii.sm,
+    height: sizing.detailLogoHeight,
     resizeMode: 'cover',
-    width: 100,
+    width: sizing.detailLogoWidth,
   },
   placeholder: {
     alignItems: 'flex-start',
-    backgroundColor: '#FACC15',
-    borderRadius: 4,
-    height: 96,
+    backgroundColor: colors.warning,
+    borderRadius: radii.sm,
+    height: sizing.detailLogoHeight,
     justifyContent: 'center',
-    paddingHorizontal: 12,
-    width: 100,
+    paddingHorizontal: spacing.md,
+    width: sizing.detailLogoWidth,
   },
   placeholderMark: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.textInverse,
     height: 16,
     marginBottom: 14,
     width: 26,
   },
   placeholderText: {
-    color: '#A16207',
+    color: colors.warningText,
     fontSize: 12,
     fontWeight: '700',
   },

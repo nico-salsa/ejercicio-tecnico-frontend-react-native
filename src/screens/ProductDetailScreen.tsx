@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 
 import {ProductLogoCard} from '../components/ProductLogoCard';
 import {ScreenLayout} from '../components/ScreenLayout';
+import {AppButton, AppText, spacing} from '../designSystem';
 import type {FinancialProduct} from '../types/financialProduct';
 import {formatProductDate} from '../utils/date';
 
@@ -25,10 +20,14 @@ interface DetailRowProps {
 function DetailRow({label, value}: DetailRowProps): React.JSX.Element {
   return (
     <View style={styles.detailRow}>
-      <Text style={styles.detailLabel}>{label}</Text>
+      <AppText style={styles.detailLabel} variant="label">
+        {label}
+      </AppText>
       <View style={styles.detailValueWrapper}>
         {typeof value === 'string' ? (
-          <Text style={styles.detailValue}>{value}</Text>
+          <AppText style={styles.detailValue} variant="bodyStrong">
+            {value}
+          </AppText>
         ) : (
           value
         )}
@@ -44,12 +43,14 @@ export function ProductDetailScreen({
   return (
     <ScreenLayout>
       <ScrollView contentContainerStyle={styles.content}>
-        <Pressable onPress={onBack} style={styles.backLink}>
-          <Text style={styles.backText}>‹ Volver</Text>
-        </Pressable>
+        <AppText onPress={onBack} style={styles.backText} variant="link">
+          ‹ Volver
+        </AppText>
 
-        <Text style={styles.heading}>ID: {product.id}</Text>
-        <Text style={styles.subheading}>Información extra</Text>
+        <AppText style={styles.heading} variant="heading">
+          ID: {product.id}
+        </AppText>
+        <AppText variant="subtitle">Información extra</AppText>
 
         <View style={styles.section}>
           <DetailRow label="Nombre" value={product.name} />
@@ -67,12 +68,8 @@ export function ProductDetailScreen({
       </ScrollView>
 
       <View style={styles.actions}>
-        <Pressable disabled style={styles.editButton}>
-          <Text style={styles.editButtonText}>Editar</Text>
-        </Pressable>
-        <Pressable disabled style={styles.deleteButton}>
-          <Text style={styles.deleteButtonText}>Eliminar</Text>
-        </Pressable>
+        <AppButton disabled label="Editar" variant="secondary" />
+        <AppButton disabled label="Eliminar" variant="danger" />
       </View>
     </ScreenLayout>
   );
@@ -82,37 +79,17 @@ const styles = StyleSheet.create({
   actions: {
     gap: 10,
     paddingBottom: 18,
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.xl,
     paddingTop: 8,
   },
-  backLink: {
+  backText: {
     alignSelf: 'flex-start',
     marginBottom: 14,
-  },
-  backText: {
-    color: '#1D4ED8',
-    fontSize: 13,
-    fontWeight: '600',
   },
   content: {
     paddingBottom: 24,
   },
-  deleteButton: {
-    alignItems: 'center',
-    backgroundColor: '#DC2626',
-    borderRadius: 4,
-    justifyContent: 'center',
-    minHeight: 46,
-    opacity: 0.95,
-  },
-  deleteButtonText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '700',
-  },
   detailLabel: {
-    color: '#4B5563',
-    fontSize: 13,
     width: 104,
   },
   detailRow: {
@@ -122,38 +99,16 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   detailValue: {
-    color: '#111827',
-    fontSize: 13,
-    fontWeight: '600',
     textAlign: 'right',
   },
   detailValueWrapper: {
     alignItems: 'flex-end',
     flex: 1,
   },
-  editButton: {
-    alignItems: 'center',
-    backgroundColor: '#E5EAF5',
-    borderRadius: 4,
-    justifyContent: 'center',
-    minHeight: 46,
-  },
-  editButtonText: {
-    color: '#355089',
-    fontSize: 14,
-    fontWeight: '700',
-  },
   heading: {
-    color: '#111827',
-    fontSize: 30,
-    fontWeight: '700',
     marginBottom: 4,
   },
   section: {
-    marginTop: 34,
-  },
-  subheading: {
-    color: '#6B7280',
-    fontSize: 14,
+    marginTop: spacing.xxxl,
   },
 });

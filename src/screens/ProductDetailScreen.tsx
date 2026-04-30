@@ -44,24 +44,24 @@ export function ProductDetailScreen({
     <ScreenLayout>
       <ScrollView contentContainerStyle={styles.content}>
         <AppText onPress={onBack} style={styles.backText} variant="link">
-          ‹ Volver
+          {'< Volver'}
         </AppText>
 
         <AppText style={styles.heading} variant="heading">
           ID: {product.id}
         </AppText>
-        <AppText variant="subtitle">Información extra</AppText>
+        <AppText variant="subtitle">Informacion extra</AppText>
 
         <View style={styles.section}>
           <DetailRow label="Nombre" value={product.name} />
-          <DetailRow label="Descripción" value={product.description} />
+          <DetailRow label="Descripcion" value={product.description} />
           <DetailRow label="Logo" value={<ProductLogoCard logo={product.logo} />} />
           <DetailRow
-            label="Fecha liberación"
+            label="Fecha liberacion"
             value={formatProductDate(product.date_release)}
           />
           <DetailRow
-            label="Fecha revisión"
+            label="Fecha revision"
             value={formatProductDate(product.date_revision)}
           />
         </View>

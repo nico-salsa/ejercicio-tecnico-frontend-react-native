@@ -1,4 +1,8 @@
-import {fetchFinancialProducts} from '../src/services/productService';
+import {
+  createFinancialProduct,
+  fetchFinancialProducts,
+  verifyFinancialProductId,
+} from '../src/services/productService';
 
 describe('fetchFinancialProducts', () => {
   afterEach(() => {
@@ -32,6 +36,35 @@ describe('fetchFinancialProducts', () => {
 
     await expect(fetchFinancialProducts()).rejects.toThrow(
       'No fue posible consultar los productos financieros.',
+    );
+  });
+
+  it('verifica si un identificador ya existe', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => true,
+      ok: true,
+    } as Response);
+
+    await expect(verifyFinancialProductId('uno')).resolves.toBe(true);
+  });
+
+  it('crea un producto financiero', async () => {
+    const createdProduct = {
+      id: 'nuevo',
+      name: 'Cuenta Inversion',
+      description: 'Producto creado desde frontend',
+      logo: 'https://example.com/logo.png',
+      date_release: '2026-05-01',
+      date_revision: '2027-05-01',
+    };
+
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => ({data: createdProduct}),
+      ok: true,
+    } as Response);
+
+    await expect(createFinancialProduct(createdProduct)).resolves.toEqual(
+      createdProduct,
     );
   });
 });

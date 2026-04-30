@@ -7,7 +7,6 @@ import {
   Put,
   Delete,
   JsonController,
-  Params,
   NotFoundError,
   BadRequestError,
 } from "routing-controllers";
@@ -18,8 +17,8 @@ import { ProductInterface } from "../interfaces/product.interface";
 const seedProducts: ProductInterface[] = [
   {
     id: "trj-crd",
-    name: "Tarjetas de Crédito",
-    description: "Tarjeta de consumo bajo la modalidad de crédito",
+    name: "Tarjetas de Credito",
+    description: "Tarjeta de consumo bajo la modalidad de credito",
     logo: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=600&q=80",
     date_release: "2025-01-01",
     date_revision: "2026-01-01",
@@ -34,8 +33,8 @@ const seedProducts: ProductInterface[] = [
   },
   {
     id: "cdt-inv",
-    name: "CDT Inversión",
-    description: "Producto de inversión a término con rentabilidad fija",
+    name: "CDT Inversion",
+    description: "Producto de inversion a termino con rentabilidad fija",
     logo: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=600&q=80",
     date_release: "2025-03-10",
     date_revision: "2026-03-10",
@@ -62,21 +61,21 @@ export class ProductController {
   getOne(@Param("id") id: number | string) {
     const index = this.findIndex(id);
 
-    if(index === -1) {
+    if (index === -1) {
       throw new NotFoundError(MESSAGE_ERROR.NotFound);
     }
+
     return this.products.find((product) => product.id === id);
   }
 
   @Post("")
-  createItem(@Body({ validate:true }) productItem: ProductDTO) {
-    
+  createItem(@Body({ validate: true }) productItem: ProductDTO) {
     const index = this.findIndex(productItem.id);
 
-    if(index !== -1) {
+    if (index !== -1) {
       throw new BadRequestError(MESSAGE_ERROR.DuplicateIdentifier);
     }
-    
+
     this.products.push(productItem);
     return {
       message: "Product added successfully",
@@ -85,10 +84,13 @@ export class ProductController {
   }
 
   @Put("/:id")
-  put(@Param("id") id: number | string, @Body() productItem: ProductInterface) {
+  put(
+    @Param("id") id: number | string,
+    @Body() productItem: ProductInterface,
+  ) {
     const index = this.findIndex(id);
 
-    if(index === -1) {
+    if (index === -1) {
       throw new NotFoundError(MESSAGE_ERROR.NotFound);
     }
 
@@ -106,10 +108,10 @@ export class ProductController {
   remove(@Param("id") id: number | string) {
     const index = this.findIndex(id);
 
-    if(index === -1) {
+    if (index === -1) {
       throw new NotFoundError(MESSAGE_ERROR.NotFound);
     }
-        
+
     this.products = [...this.products.filter((product) => product.id !== id)];
     return {
       message: "Product removed successfully",
@@ -119,5 +121,4 @@ export class ProductController {
   private findIndex(id: number | string) {
     return this.products.findIndex((product) => product.id === id);
   }
-
 }

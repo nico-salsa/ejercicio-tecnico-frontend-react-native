@@ -4,6 +4,7 @@ import {fetchFinancialProducts} from '../services/productService';
 import type {FinancialProduct} from '../types/financialProduct';
 
 interface UseFinancialProductsResult {
+  addProduct: (product: FinancialProduct) => void;
   error: string | null;
   isLoading: boolean;
   products: FinancialProduct[];
@@ -37,6 +38,9 @@ export function useFinancialProducts(): UseFinancialProductsResult {
   }, [loadProducts]);
 
   return {
+    addProduct: (product: FinancialProduct) => {
+      setProducts(currentProducts => [product, ...currentProducts]);
+    },
     error,
     isLoading,
     products,

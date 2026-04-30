@@ -5,7 +5,7 @@ export class ProductDTO implements ProductInterface {
     @IsNotEmpty()
     id!: string;
     
-    @MinLength(6)
+    @MinLength(5)
     @MaxLength(100)
     name!: string;
     

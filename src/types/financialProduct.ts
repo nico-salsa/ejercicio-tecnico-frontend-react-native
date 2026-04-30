@@ -7,6 +7,8 @@ export interface FinancialProduct {
   date_revision: string;
 }
 
+export type FinancialProductInput = FinancialProduct;
+
 export interface FinancialProductsResponse {
   data: FinancialProduct[];
 }

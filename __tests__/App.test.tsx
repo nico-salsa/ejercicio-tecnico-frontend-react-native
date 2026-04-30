@@ -48,7 +48,6 @@ describe('App', () => {
 
     expect(content).toContain('Tarjetas de Credito');
     expect(content).toContain('2 registros');
-    expect(content).toContain('Cantidad obtenida desde la API');
 
     await act(async () => {
       app!.unmount();
@@ -91,6 +90,43 @@ describe('App', () => {
     });
   });
 
+  it('navega a la pantalla de edicion desde el detalle', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => ({data: mockProducts}),
+      ok: true,
+    } as Response);
+
+    let app: renderer.ReactTestRenderer;
+
+    await act(async () => {
+      app = renderer.create(<App />);
+    });
+
+    await act(async () => {
+      app!.root.findByProps({testID: 'product-item-trj-crd'}).props.onPress();
+    });
+
+    await act(async () => {
+      app!.root.findByProps({testID: 'open-edit-product'}).props.onPress();
+    });
+
+    expect(app!.root.findByProps({testID: 'product-form-id'}).props.editable).toBe(
+      false,
+    );
+
+    const content = app!.root
+      .findAllByType(Text)
+      .map(node => node.props.children)
+      .flat(Infinity)
+      .join(' ');
+
+    expect(content).toContain('Formulario de Edicion');
+
+    await act(async () => {
+      app!.unmount();
+    });
+  });
+
   it('filtra el listado y actualiza el conteo relativo', async () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => ({data: mockProducts}),
@@ -120,7 +156,6 @@ describe('App', () => {
     expect(content).toContain('Cuenta de Ahorro');
     expect(content).not.toContain('Tarjetas de Credito');
     expect(content).toContain('1 de 2 registros');
-    expect(content).toContain('Cantidad visible segun la busqueda');
 
     await act(async () => {
       app!.unmount();

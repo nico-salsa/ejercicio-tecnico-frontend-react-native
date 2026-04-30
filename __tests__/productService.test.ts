@@ -1,6 +1,7 @@
 import {
   createFinancialProduct,
   fetchFinancialProducts,
+  updateFinancialProduct,
   verifyFinancialProductId,
 } from '../src/services/productService';
 
@@ -66,5 +67,27 @@ describe('fetchFinancialProducts', () => {
     await expect(createFinancialProduct(createdProduct)).resolves.toEqual(
       createdProduct,
     );
+  });
+
+  it('actualiza un producto financiero', async () => {
+    const updatedProduct = {
+      name: 'Cuenta Inversion Plus',
+      description: 'Producto actualizado desde frontend',
+      logo: 'https://example.com/logo-updated.png',
+      date_release: '2026-05-01',
+      date_revision: '2027-05-01',
+    };
+
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => ({data: updatedProduct}),
+      ok: true,
+    } as Response);
+
+    await expect(
+      updateFinancialProduct('uno', updatedProduct),
+    ).resolves.toEqual({
+      id: 'uno',
+      ...updatedProduct,
+    });
   });
 });

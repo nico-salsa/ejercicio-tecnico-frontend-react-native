@@ -9,6 +9,7 @@ import {formatProductDate} from '../utils/date';
 
 interface ProductDetailScreenProps {
   onBack: () => void;
+  onEdit: () => void;
   product: FinancialProduct;
 }
 
@@ -38,6 +39,7 @@ function DetailRow({label, value}: DetailRowProps): React.JSX.Element {
 
 export function ProductDetailScreen({
   onBack,
+  onEdit,
   product,
 }: ProductDetailScreenProps): React.JSX.Element {
   return (
@@ -68,7 +70,12 @@ export function ProductDetailScreen({
       </ScrollView>
 
       <View style={styles.actions}>
-        <AppButton disabled label="Editar" variant="secondary" />
+        <AppButton
+          label="Editar"
+          onPress={onEdit}
+          testID="open-edit-product"
+          variant="secondary"
+        />
         <AppButton disabled label="Eliminar" variant="danger" />
       </View>
     </ScreenLayout>

@@ -4,21 +4,30 @@ import {FlatList, ListRenderItem, StyleSheet} from 'react-native';
 import {FeedbackState} from '../components/FeedbackState';
 import {LoadingState} from '../components/LoadingState';
 import {ProductListItem} from '../components/ProductListItem';
+import {ProductRecordCount} from '../components/ProductRecordCount';
 import {ProductSearchField} from '../components/ProductSearchField';
 import {ScreenLayout} from '../components/ScreenLayout';
-import {AppText, Surface, colors, radii, spacing} from '../designSystem';
-import {useFinancialProducts} from '../hooks/useFinancialProducts';
+import {AppButton, Surface, colors, radii, spacing} from '../designSystem';
 import type {FinancialProduct} from '../types/financialProduct';
 import {filterFinancialProducts, normalizeSearchTerm} from '../utils/search';
 
 interface ProductListScreenProps {
+  error: string | null;
+  isLoading: boolean;
+  onCreateProduct: () => void;
   onSelectProduct: (product: FinancialProduct) => void;
+  products: FinancialProduct[];
+  retry: () => Promise<void>;
 }
 
 export function ProductListScreen({
+  error,
+  isLoading,
+  onCreateProduct,
   onSelectProduct,
+  products,
+  retry,
 }: ProductListScreenProps): React.JSX.Element {
-  const {error, isLoading, products, retry} = useFinancialProducts();
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredProducts = filterFinancialProducts(products, searchQuery);
@@ -70,27 +79,30 @@ export function ProductListScreen({
         </Surface>
       ) : null}
 
-      {!isLoading && !error && filteredProducts.length > 0 ? (
-        <AppText style={styles.caption} variant="caption">
-          {filteredProducts.length}
-          {hasSearchQuery
-            ? ' productos coinciden con tu busqueda.'
-            : ' productos cargados desde la API.'}
-        </AppText>
+      {!isLoading && !error && products.length > 0 ? (
+        <ProductRecordCount
+          filteredCount={filteredProducts.length}
+          hasActiveFilter={hasSearchQuery}
+          totalCount={products.length}
+        />
       ) : null}
+
+      <AppButton
+        label="Agregar"
+        onPress={onCreateProduct}
+        testID="open-create-product"
+        variant="primary"
+      />
     </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  caption: {
-    marginTop: spacing.sm + 2,
-    textAlign: 'center',
-  },
   listCard: {
     borderColor: colors.border,
     borderRadius: radii.lg,
     borderWidth: 1,
+    marginBottom: spacing.xl,
     overflow: 'hidden',
   },
 });

@@ -7,7 +7,7 @@ import App from '../App';
 const mockProducts = [
   {
     id: 'trj-crd',
-    name: 'Tarjetas de Crédito',
+    name: 'Tarjetas de Credito',
     description: 'Tarjeta de consumo bajo la modalidad de credito',
     logo: 'assets-1.png',
     date_release: '2025-01-01',
@@ -28,7 +28,7 @@ describe('App', () => {
     jest.restoreAllMocks();
   });
 
-  it('renderiza el listado despues de cargar productos', async () => {
+  it('renderiza el listado despues de cargar productos y muestra el conteo total', async () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => ({data: mockProducts}),
       ok: true,
@@ -46,8 +46,9 @@ describe('App', () => {
       .flat(Infinity)
       .join(' ');
 
-    expect(content).toContain('Tarjetas de Crédito');
-    expect(content).toContain('productos cargados desde la API.');
+    expect(content).toContain('Tarjetas de Credito');
+    expect(content).toContain('2 registros');
+    expect(content).toContain('Cantidad obtenida desde la API');
 
     await act(async () => {
       app!.unmount();
@@ -81,7 +82,7 @@ describe('App', () => {
       .join(' ');
 
     expect(content).toContain('trj-crd');
-    expect(content).toContain('Tarjetas de Crédito');
+    expect(content).toContain('Tarjetas de Credito');
     expect(content).toContain('Editar');
     expect(content).toContain('Eliminar');
 
@@ -90,7 +91,7 @@ describe('App', () => {
     });
   });
 
-  it('filtra el listado desde el campo de busqueda', async () => {
+  it('filtra el listado y actualiza el conteo relativo', async () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => ({data: mockProducts}),
       ok: true,
@@ -117,15 +118,16 @@ describe('App', () => {
       .join(' ');
 
     expect(content).toContain('Cuenta de Ahorro');
-    expect(content).not.toContain('Tarjetas de Crédito');
-    expect(content).toContain('productos coinciden con tu busqueda.');
+    expect(content).not.toContain('Tarjetas de Credito');
+    expect(content).toContain('1 de 2 registros');
+    expect(content).toContain('Cantidad visible segun la busqueda');
 
     await act(async () => {
       app!.unmount();
     });
   });
 
-  it('muestra un estado visual cuando la busqueda no tiene coincidencias', async () => {
+  it('mantiene el conteo visible cuando la busqueda no tiene coincidencias', async () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => ({data: mockProducts}),
       ok: true,
@@ -153,6 +155,7 @@ describe('App', () => {
 
     expect(content).toContain('Sin resultados');
     expect(content).toContain('No se encontraron productos para "hipoteca".');
+    expect(content).toContain('0 de 2 registros');
 
     await act(async () => {
       app!.unmount();

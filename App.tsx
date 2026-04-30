@@ -1,23 +1,51 @@
 import React, {useState} from 'react';
 
+import {ProductCreateScreen} from './src/screens/ProductCreateScreen';
 import {ProductDetailScreen} from './src/screens/ProductDetailScreen';
 import {ProductListScreen} from './src/screens/ProductListScreen';
+import {useFinancialProducts} from './src/hooks/useFinancialProducts';
 import type {FinancialProduct} from './src/types/financialProduct';
 
-function App(): React.JSX.Element {
-  const [selectedProduct, setSelectedProduct] =
-    useState<FinancialProduct | null>(null);
+type ViewState =
+  | {type: 'list'}
+  | {type: 'detail'; product: FinancialProduct}
+  | {type: 'create'};
 
-  if (selectedProduct) {
+function App(): React.JSX.Element {
+  const {addProduct, error, isLoading, products, retry} = useFinancialProducts();
+  const [view, setView] = useState<ViewState>({type: 'list'});
+
+  if (view.type === 'detail') {
     return (
       <ProductDetailScreen
-        product={selectedProduct}
-        onBack={() => setSelectedProduct(null)}
+        onBack={() => setView({type: 'list'})}
+        product={view.product}
       />
     );
   }
 
-  return <ProductListScreen onSelectProduct={setSelectedProduct} />;
+  if (view.type === 'create') {
+    return (
+      <ProductCreateScreen
+        onBack={() => setView({type: 'list'})}
+        onCreateSuccess={product => {
+          addProduct(product);
+          setView({type: 'list'});
+        }}
+      />
+    );
+  }
+
+  return (
+    <ProductListScreen
+      error={error}
+      isLoading={isLoading}
+      onCreateProduct={() => setView({type: 'create'})}
+      onSelectProduct={product => setView({type: 'detail', product})}
+      products={products}
+      retry={retry}
+    />
+  );
 }
 
 export default App;

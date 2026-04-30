@@ -53,6 +53,7 @@ interface AppButtonProps {
 
 interface AppFieldProps extends Omit<TextInputProps, 'style'> {
   containerStyle?: StyleProp<ViewStyle>;
+  hasError?: boolean;
 }
 
 // Las primitivas son wrappers pequenos sobre componentes nativos.
@@ -145,6 +146,7 @@ export function AppButton({
 export function AppField({
   containerStyle,
   editable = true,
+  hasError = false,
   placeholderTextColor = '#9CA3AF',
   ...props
 }: AppFieldProps): React.JSX.Element {
@@ -154,9 +156,31 @@ export function AppField({
         {...props}
         editable={editable}
         placeholderTextColor={placeholderTextColor}
-        style={[styles.field, !editable ? styles.fieldDisabled : null]}
+        style={[
+          styles.field,
+          hasError ? styles.fieldError : null,
+          !editable ? styles.fieldDisabled : null,
+        ]}
       />
     </View>
+  );
+}
+
+interface FieldMessageProps extends TextProps {
+  tone?: 'error' | 'muted';
+}
+
+export function FieldMessage({
+  style,
+  tone = 'muted',
+  ...props
+}: FieldMessageProps): React.JSX.Element {
+  return (
+    <AppText
+      {...props}
+      style={[tone === 'error' ? styles.fieldMessageError : styles.fieldMessageMuted, style]}
+      variant="caption"
+    />
   );
 }
 
@@ -212,8 +236,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: 10,
   },
+  fieldError: {
+    borderColor: colors.danger,
+  },
   fieldDisabled: {
     opacity: 0.75,
+  },
+  fieldMessageError: {
+    color: colors.danger,
+    marginTop: spacing.xxs,
+  },
+  fieldMessageMuted: {
+    marginTop: spacing.xxs,
   },
   screen: {
     backgroundColor: colors.background,

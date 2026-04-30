@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 
+import {deleteFinancialProduct} from './src/services/productService';
 import {ProductCreateScreen} from './src/screens/ProductCreateScreen';
 import {ProductDetailScreen} from './src/screens/ProductDetailScreen';
 import {ProductEditScreen} from './src/screens/ProductEditScreen';
@@ -14,14 +15,26 @@ type ViewState =
   | {type: 'edit'; product: FinancialProduct};
 
 function App(): React.JSX.Element {
-  const {addProduct, error, isLoading, products, retry, updateProduct} =
-    useFinancialProducts();
+  const {
+    addProduct,
+    error,
+    isLoading,
+    products,
+    removeProduct,
+    retry,
+    updateProduct,
+  } = useFinancialProducts();
   const [view, setView] = useState<ViewState>({type: 'list'});
 
   if (view.type === 'detail') {
     return (
       <ProductDetailScreen
         onBack={() => setView({type: 'list'})}
+        onDelete={async () => {
+          await deleteFinancialProduct(view.product.id);
+          removeProduct(view.product.id);
+          setView({type: 'list'});
+        }}
         onEdit={() => setView({type: 'edit', product: view.product})}
         product={view.product}
       />

@@ -1,5 +1,6 @@
 import {
   createFinancialProduct,
+  deleteFinancialProduct,
   fetchFinancialProducts,
   updateFinancialProduct,
   verifyFinancialProductId,
@@ -89,5 +90,13 @@ describe('fetchFinancialProducts', () => {
       id: 'uno',
       ...updatedProduct,
     });
+  });
+
+  it('elimina un producto financiero', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      ok: true,
+    } as Response);
+
+    await expect(deleteFinancialProduct('uno')).resolves.toBeUndefined();
   });
 });

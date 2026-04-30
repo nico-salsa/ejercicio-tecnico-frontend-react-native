@@ -1,38 +1,79 @@
-# ejercicio-tecnico-frontend-react-native
+# Ejercicio Tecnico Frontend React Native
 
-Base inicial del frontend en React Native con TypeScript para la prueba tecnica.
+Aplicacion React Native con TypeScript para administrar productos financieros de un banco. La solucion cubre listado, busqueda, conteo, creacion, edicion y eliminacion con confirmacion, consumiendo el backend local incluido en `repo-interview-main`.
 
-## Stack base
+## Alcance
+
+- Listado de productos financieros desde API local
+- Busqueda por nombre o identificador
+- Conteo de registros visibles
+- Creacion con validaciones y verificacion remota de `id`
+- Edicion con `id` bloqueado
+- Eliminacion con modal de confirmacion
+- Design system propio sobre componentes nativos
+- Pruebas unitarias con cobertura superior al minimo requerido
+
+## Stack
 
 - React Native
-- React
+- Expo
 - TypeScript
-- Jest para pruebas unitarias
-- ESLint para validacion estatica
+- Jest
+- ESLint
+
+## Estructura
+
+- `src/components`: piezas de UI reutilizables
+- `src/designSystem`: tokens, primitivas y recursos visuales comunes
+- `src/screens`: pantallas y flujos principales
+- `src/services`: consumo de API
+- `src/hooks`: estado local del catalogo
+- `src/utils`: reglas de negocio y helpers
+- `repo-interview-main`: backend local para desarrollo y validacion manual
+
+## Requisitos
+
+- Node.js 20 o superior
+- npm 10 o superior
+
+## Puesta en marcha
+
+1. Instalar dependencias del backend:
+   `cd repo-interview-main && npm install`
+2. Levantar el backend:
+   `npm run start:dev`
+3. En otra terminal, instalar dependencias del frontend:
+   `cd ..` y luego `npm install`
+4. Levantar la app:
+   `npm run web`
+
+La app tambien puede abrirse con:
+
+- `npm run start`
+- `npm run android`
 
 ## Scripts
 
-- `npm run start`: levanta Expo para probar la app
-- `npm run web`: abre la app en navegador para validacion manual rapida
-- `npm run lint`: ejecuta ESLint sobre el proyecto
-- `npm run test`: ejecuta las pruebas unitarias
-- `npm run test:coverage`: ejecuta las pruebas con reporte y umbral de cobertura
+- `npm run start`: inicia Expo
+- `npm run web`: inicia Expo Web
+- `npm run android`: inicia Expo para Android
+- `npm run lint`: valida el codigo con ESLint
+- `npm run test`: ejecuta pruebas unitarias
+- `npm run test:coverage`: ejecuta pruebas con cobertura
+
+## Calidad
+
+Antes de entregar o fusionar cambios:
+
+- `npm run lint`
+- `npm run test:coverage`
+
+## Notas tecnicas
+
+- La maquetacion no usa frameworks de estilos ni componentes prefabricados externos.
+- El design system vive en `src/designSystem` y concentra colores, tipografia, espaciados y primitivas reutilizables.
+- El backend local incluido se versiona para que la validacion manual sea reproducible.
 
 ## Gobernanza
 
-La documentacion de flujo Git, commits y remoto oficial esta en [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Design system
-
-La maquetacion del proyecto usa un design system propio en `src/designSystem`. En React Native esto reemplaza la idea de un "design system css": la base visual se implementa con `StyleSheet`, tokens de presentacion y primitivas reutilizables sobre componentes nativos, sin frameworks de estilos ni componentes prefabricados externos.
-
-Capas actuales:
-- `tokens.ts`: colores, espaciados, radios, tamanos y tipografia base.
-- `primitives.tsx`: wrappers pequenos como `AppText`, `AppButton`, `AppField`, `Surface`, `Stack` y `ScreenContainer`.
-- `bankMark.tsx`: isotipo del header integrado al mismo lenguaje visual.
-
-F1 ya consume esta capa y queda como referencia para las siguientes funcionalidades.
-
-## Backend local
-
-El backend para desarrollo se encuentra en `repo-interview-main`. Se versiona junto al frontend para que la validacion manual local no dependa de cambios no rastreados, aunque sigue siendo un soporte de desarrollo y no la entrega principal del ejercicio de React Native.
+Las reglas de ramas, commits y merge estan documentadas en [CONTRIBUTING.md](./CONTRIBUTING.md).

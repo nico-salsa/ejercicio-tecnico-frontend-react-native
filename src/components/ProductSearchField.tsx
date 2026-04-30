@@ -3,9 +3,25 @@ import {StyleSheet} from 'react-native';
 
 import {AppField, spacing} from '../designSystem';
 
-export function ProductSearchField(): React.JSX.Element {
+interface ProductSearchFieldProps {
+  onChangeText: (value: string) => void;
+  value: string;
+}
+
+export function ProductSearchField({
+  onChangeText,
+  value,
+}: ProductSearchFieldProps): React.JSX.Element {
   return (
-    <AppField containerStyle={styles.container} editable={false} placeholder="Search..." value="" />
+    <AppField
+      autoCapitalize="none"
+      autoCorrect={false}
+      containerStyle={styles.container}
+      onChangeText={onChangeText}
+      placeholder="Search..."
+      testID="product-search-input"
+      value={value}
+    />
   );
 }
 

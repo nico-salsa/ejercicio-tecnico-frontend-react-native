@@ -4,9 +4,10 @@ import {FlatList, ListRenderItem, StyleSheet} from 'react-native';
 import {FeedbackState} from '../components/FeedbackState';
 import {LoadingState} from '../components/LoadingState';
 import {ProductListItem} from '../components/ProductListItem';
+import {ProductRecordCount} from '../components/ProductRecordCount';
 import {ProductSearchField} from '../components/ProductSearchField';
 import {ScreenLayout} from '../components/ScreenLayout';
-import {AppText, Surface, colors, radii, spacing} from '../designSystem';
+import {Surface, colors, radii} from '../designSystem';
 import {useFinancialProducts} from '../hooks/useFinancialProducts';
 import type {FinancialProduct} from '../types/financialProduct';
 import {filterFinancialProducts, normalizeSearchTerm} from '../utils/search';
@@ -70,23 +71,18 @@ export function ProductListScreen({
         </Surface>
       ) : null}
 
-      {!isLoading && !error && filteredProducts.length > 0 ? (
-        <AppText style={styles.caption} variant="caption">
-          {filteredProducts.length}
-          {hasSearchQuery
-            ? ' productos coinciden con tu busqueda.'
-            : ' productos cargados desde la API.'}
-        </AppText>
+      {!isLoading && !error && products.length > 0 ? (
+        <ProductRecordCount
+          filteredCount={filteredProducts.length}
+          hasActiveFilter={hasSearchQuery}
+          totalCount={products.length}
+        />
       ) : null}
     </ScreenLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  caption: {
-    marginTop: spacing.sm + 2,
-    textAlign: 'center',
-  },
   listCard: {
     borderColor: colors.border,
     borderRadius: radii.lg,

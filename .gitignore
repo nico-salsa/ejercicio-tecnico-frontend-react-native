@@ -22,7 +22,6 @@ Thumbs.db
 # Local development-only assets
 .codex/
 openspec/
-repo-interview-main/
 ejercicio-tecnico-frontend-react-native-2024.pdf
 
 # Native and bundler caches
@@ -30,4 +29,3 @@ android/.gradle/
 android/app/build/
 ios/build/
 .metro-health-check*
-

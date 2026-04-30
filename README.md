@@ -24,7 +24,7 @@ La documentacion de flujo Git, commits y remoto oficial esta en [CONTRIBUTING.md
 
 ## Backend local
 
-El backend para desarrollo vive fuera del entregable del frontend. En este workspace se usa de forma local desde `repo-interview-main`, pero esa carpeta no forma parte del repositorio versionado.
+El backend para desarrollo se encuentra en `repo-interview-main`. Se versiona junto al frontend para que la validacion manual local no dependa de cambios no rastreados, aunque sigue siendo un soporte de desarrollo y no la entrega principal del ejercicio de React Native.
 
 ## Prueba manual de F1
 
@@ -38,6 +38,7 @@ El backend para desarrollo vive fuera del entregable del frontend. En este works
 8. Verifica el listado de productos y haz clic sobre uno para abrir el detalle.
 
 Nota:
+- El backend local ahora inicia con productos semilla para que F1 pueda revisarse manualmente sin crear registros primero.
 - En F1 el campo de busqueda y los botones `Editar` / `Eliminar` se muestran como placeholders visuales alineados con D1.
 - Si Expo cambia el puerto, usa exactamente la URL que imprima en consola en la linea `Web is waiting on http://localhost:XXXX`.
 - El entrypoint web del proyecto usa `registerRootComponent` de Expo en [index.js](C:/Sofka%20U/reto%204/ejercicio-tecnico-frontend-react-native/index.js:1), que es el registro correcto para evitar pantallas en blanco por montaje incompleto en web.

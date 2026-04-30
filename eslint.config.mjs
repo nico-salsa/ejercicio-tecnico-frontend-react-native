@@ -9,6 +9,7 @@ export default [
       '.codex/**',
       '.idea/**',
       'coverage/**',
+      'dist/**',
       'node_modules/**',
       'openspec/**',
       'repo-interview-main/**',
